@@ -51,7 +51,9 @@ export default function Library() {
                         <li key={book.id} style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
                             <strong>{book.title}</strong> - <em>{book.author}</em>
                             <div style={{ marginTop: 6 }}>
-                                <small>{book.description?.slice(0, 200)}</small>
+                                <small>{book.description}</small>
+                                <p></p>
+                                <small>Link to Book: {book.sourceURL}</small>
                             </div>
                             <div style={{ marginTop: 8 }}>
                                 <button onClick={() => handleRemove(book.id)}>

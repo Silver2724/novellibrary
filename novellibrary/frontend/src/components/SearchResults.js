@@ -11,7 +11,7 @@ export default function SearchResults({ results = [], onSave }) {
                     <li key={idx} style={{padding: 8, borderBottom: '1px solid #ddd'}}>
                         <strong>{r.title}</strong> - <em>{r.author}</em>
                         <div style={{marginTop: 6}}>
-                            <small>{r.description?.slice(0, 200)}</small>
+                            <small>{r.description}</small>
                         </div>
                         <div style={{marginTop: 8}}>
                             <button onClick={ () => onSave({
