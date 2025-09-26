@@ -1,0 +1,111 @@
+/* Reset and base styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  color: #333;
+}
+
+/* Page container */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Headings */
+h1, h2 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Search bar */
+form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+form button {
+  padding: 10px 16px;
+  background: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background: #004d99;
+}
+
+/* Results & library list */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  background: white;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+li strong {
+  font-size: 1.1rem;
+}
+
+/* Buttons inside list */
+li button {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+li button:hover {
+  background: #218838;
+}
+
+/* Delete button */
+li .delete-btn {
+  background: #dc3545;
+}
+
+li .delete-btn:hover {
+  background: #b52a37;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .container {
+    padding: 8px;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  form button {
+    width: 100%;
+  }
+
+  li {
+    padding: 10px;
+  }
+}

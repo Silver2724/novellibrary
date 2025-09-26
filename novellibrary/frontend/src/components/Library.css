@@ -1,0 +1,11 @@
+.title {
+    color: #06e6d1;
+  background-image: linear-gradient(45deg, #f0d75a , #ef7262 50%, #f7a16c 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  display: flex;
+  font-size: 80px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
