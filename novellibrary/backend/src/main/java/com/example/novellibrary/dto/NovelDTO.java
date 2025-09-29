@@ -1,5 +1,8 @@
 package com.example.novellibrary.dto;
 
+//DTO = data transfer object
+//used to transfer data from external APIs (Google Books) to your app
+//prevents exposing JPA entities directly
 public class NovelDTO {
     private Long id;
     private String title;

@@ -1,0 +1,10 @@
+.submitting {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.searchQuery {
+    flex: 1;
+    padding: 8px;
+}

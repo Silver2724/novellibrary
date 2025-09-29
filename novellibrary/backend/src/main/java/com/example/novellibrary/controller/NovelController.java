@@ -2,7 +2,9 @@ package com.example.novellibrary.controller;
 
 import com.example.novellibrary.dto.NovelDTO;
 import com.example.novellibrary.model.Novel;
+import com.example.novellibrary.model.User;
 import com.example.novellibrary.service.NovelService;
+import com.example.novellibrary.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.*;
 @RequestMapping("/api")
 public class NovelController {
     private final NovelService service;
+    private final UserService uService;
     private final RestTemplate rest = new RestTemplate();
 
     @Value("${GOOGLE_BOOKS_API_KEY}")
@@ -22,20 +25,23 @@ public class NovelController {
     private String googleAPIKey;
 
     //initialze service
-    public NovelController(NovelService service) {
+    public NovelController(NovelService service, UserService uService) {
         this.service = service;
+        this.uService = uService;
     }
 
     //get all the novels in the library
-    @GetMapping("/novels") 
-    public List<Novel> getLibrary() {
-        return service.listAll();
+    @GetMapping("/novels/{userId}") 
+    public List<Novel> getLibrary(@PathVariable Long userId) {
+        User user = uService.findById(userId).orElseThrow();
+        return service.listAll(user);
     }
 
     //save a novel title to a library
-    @PostMapping("/novels")
-    public Novel saveNovel(@RequestBody NovelDTO dto) {
-        Novel n = new Novel(dto.getTitle(), dto.getAuthor(), dto.getDescription(), dto.getSourceURL());
+    @PostMapping("/novels/{userId}")
+    public Novel saveNovel(@PathVariable Long userId, @RequestBody NovelDTO dto) {
+        User user = uService.findById(userId).orElseThrow();
+        Novel n = new Novel(dto.getTitle(), dto.getAuthor(), dto.getDescription(), dto.getSourceURL(), user);
         return service.save(n);
     }
 

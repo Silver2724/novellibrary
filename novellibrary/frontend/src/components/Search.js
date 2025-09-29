@@ -20,7 +20,7 @@ export default function Search() {
 
     const handleSave = async (novel) => {
         try {
-            const res = await fetch(`http://localhost:8080/api/novels`, {
+            const res = await fetch(`http://localhost:8080/api/novels/#{userId}`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(novel),

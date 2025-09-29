@@ -6,11 +6,15 @@ import Search from './components/Search';
 import SearchBar from './components/SearchBar';
 import Library from './components/Library';
 import { Route, Routes } from 'react-router-dom';
+import Login from './components/Login';
 
 export default function App() {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [library, setLibrary] = useState([]);
+    const [userId, setUserId] = useState(null);
+
+    <Login onLogin={(id) => setUserId(id)} />
 
     useEffect(() => { refreshLibrary(); }, []);
 

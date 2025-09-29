@@ -1,6 +1,7 @@
 package com.example.novellibrary.service;
 
 import com.example.novellibrary.model.Novel;
+import com.example.novellibrary.model.User;
 import com.example.novellibrary.repository.NovelRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -14,27 +15,33 @@ public class NovelService {
         this.repo = repo;
     }
 
-    public List<Novel> listAll() {
-        return repo.findAll();
+    //find all novels in the library
+    public List<Novel> listAll(User user) {
+        return repo.findByUser(user);
     }
 
+    //save a new novel/update existing
     public Novel save(Novel novel) {
         return repo.save(novel);
     }
 
+    //find novel by primary key
     public Optional<Novel> findById(Long id) {
         return repo.findById(id);
     }
 
+    //delete novel by id
     public void delete(Long id) {
         repo.deleteById(id);
     }
 
-    public List<Novel> searchByTitle(String title) {
-        return repo.findByTitleContainingIgnoreCase(title);
+    //search by title (case insensitive)
+    public List<Novel> searchByTitle(String title, User user) {
+        return repo.findByTitleContainingIgnoreCaseAndUser(title, user);
     }
 
-    public List<Novel> searchByAuthor(String author) {
-        return repo.findByAuthorContainingIgnoreCase(author);
+    //search by author(case insensitive)
+    public List<Novel> searchByAuthor(String author, User user) {
+        return repo.findByAuthorContainingIgnoreCaseAndUser(author, user);
     }
 }
