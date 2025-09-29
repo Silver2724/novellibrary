@@ -1,45 +1,66 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Register() {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:8080/api/auth/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify({ username, password }),
-        });
+        try {
+            const response = await fetch("http://localhost:8080/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify({ name, email, password }),
+            });
 
-        const data = await response.json();
+            if(!response.ok) {
+                setError("Registration error.");
+                return;
+            }
 
-        if(response.ok) {
-            alert("Registration successful.");
-        } else {
-            alert(data.error || "Registration failed.");
-        }
+        } catch (err) {
+            console.error(err);
+            setError("Something went wrong.")
+        }      
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <div>
             <h2>Register</h2>
-            <input
-                type="text"
-                placeholder="Type in email address...."
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <br/>
-            <input
-                type="password"
-                placeholder="Type in password...."
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <br />
-            <button type="submit">Register</button>                            
-        </form>
+            <form onSubmit={handleRegister}>
+                <input
+                    type="text"
+                    placeholder="Full name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <br />
+                <input
+                    type="text"
+                    placeholder="Type in email address...."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <br/>
+                <input
+                    type="password"
+                    placeholder="Type in password...."
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <br />
+                <button type="submit">Register</button>                            
+            </form>
+            {error && <p style={{color: "red" }}>{error}</p>}
+            <p>
+                Already have an account? <Link to="/login">Login</Link>
+            </p>
+        </div>       
     );
 } 

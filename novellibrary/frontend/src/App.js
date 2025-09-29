@@ -7,50 +7,64 @@ import SearchBar from './components/SearchBar';
 import Library from './components/Library';
 import { Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
+import Register from './components/Register';
+import Account from './components/Account';
 
 export default function App() {
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState([]);
-    const [library, setLibrary] = useState([]);
-    const [userId, setUserId] = useState(null);
+    //const [results, setResults] = useState([]);
+    //const [library, setLibrary] = useState([]);
+    const [user, setUser] = useState(null);
 
-    <Login onLogin={(id) => setUserId(id)} />
+    useEffect(() => { 
+        const stored = localStorage.getItem("user");
+        if (stored) setUser(JSON.parse(stored));
+     }, []
+    );
 
-    useEffect(() => { refreshLibrary(); }, []);
+    //useEffect(() => { refreshLibrary(); }, []);
 
-    async function refreshLibrary() {
-        const lib = await getLibrary();
-        setLibrary(lib);        
-    }
+    // async function refreshLibrary() {
+    //     const lib = await getLibrary();
+    //     setLibrary(lib); 
+    // }
+    
+    // async function refreshLibrary() {
+    //     const lib = await getLibrary();
+    //     setLibrary(lib);        
+    // }
 
-    async function handleSearch(q) {
-        setQuery(q);
-        if(!q) {
-            setResults([]);
-            return;
-        }
-        const r = await searchNovels(q);
-        setResults(r);
-    }
+    // async function handleSearch(q) {
+    //     setQuery(q);
+    //     if(!q) {
+    //         setResults([]);
+    //         return;
+    //     }
+    //     const r = await searchNovels(q);
+    //     setResults(r);
+    // }
 
-    async function handleSave(id) {
-        await saveNovel(id);
-        await refreshLibrary();        
-    }
+    // async function handleSave(id) {
+    //     await saveNovel(id);
+    //     await refreshLibrary();        
+    // }
 
-    async function handleDelete(id) {
-        await deleteNovel(id);
-        await refreshLibrary();        
-    }
+    // async function handleDelete(id) {
+    //     await deleteNovel(id);
+    //     await refreshLibrary();        
+    // }
 
     return (
         <div>
-            <NavBar />
+            <NavBar user={user} setUser={setUser}/>
             <div className='contained'>
                 <Routes>
                     <Route path='/' element={<Home />} />
-                    <Route path='/library' element={<Library />}/>
                     <Route path='/search' element={<Search />}/>
+                    {/* <Route path='/library' element={<Library />} /> */}
+                    <Route path='/login' element={<Login setUser={setUser} />} />
+                    <Route path='/register' element={<Register />}/>
+                    <Route path='/account' element={<Account user={user} />} />
                 </Routes>
             </div>          
         </div>

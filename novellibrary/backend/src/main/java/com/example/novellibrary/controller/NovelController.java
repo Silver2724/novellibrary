@@ -42,7 +42,7 @@ public class NovelController {
     public Novel saveNovel(@PathVariable Long userId, @RequestBody NovelDTO dto) {
         User user = uService.findById(userId).orElseThrow();
         Novel n = new Novel(dto.getTitle(), dto.getAuthor(), dto.getDescription(), dto.getSourceURL(), user);
-        return service.save(n);
+        return service.save(n, user);
     }
 
     //delete a novel from your library
@@ -61,7 +61,6 @@ public class NovelController {
         q = q.trim();
 
         //if google API key is not blank
-        //
         if(!googleAPIKey.isBlank()) {
             String url = "https://www.googleapis.com/books/v1/volumes?q=" + q + "&maxResults=10&key=" + googleAPIKey;
             System.out.println("Using Google Books API Key: " + googleAPIKey);

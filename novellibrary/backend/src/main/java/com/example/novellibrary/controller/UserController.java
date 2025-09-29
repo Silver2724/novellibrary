@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
 public class UserController {
@@ -25,6 +25,14 @@ public class UserController {
         String name = body.get("name");
         String email = body.get("email");
         String password = body.get("password");
+
+        //check if user already exists
+        Optional<User> existing = service.findByEmail(email);
+        if(existing.isPresent()) {
+            return ResponseEntity.badRequest().body("Email is already in use.");
+        }
+
+        //create + save new user
         User user = service.register(name, email, password);
         return ResponseEntity.ok(user);
     }

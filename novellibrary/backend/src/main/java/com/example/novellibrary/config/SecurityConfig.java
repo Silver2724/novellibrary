@@ -10,7 +10,7 @@ public class SecurityConfig {
 
     // This bean allows us to inject BCryptPasswordEncoder anywhere in the project
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

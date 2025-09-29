@@ -21,7 +21,8 @@ public class NovelService {
     }
 
     //save a new novel/update existing
-    public Novel save(Novel novel) {
+    public Novel save(Novel novel, User user) {
+        novel.setUser(user);
         return repo.save(novel);
     }
 

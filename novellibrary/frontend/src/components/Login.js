@@ -1,46 +1,122 @@
-import React, { useState } from "react";
+// import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
-export default function Login({ onLogin }) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+// export default function Login({ setUser }) {
+//     const [email, setEmail] = useState("");
+//     const [password, setPassword] = useState("");
+//     const [error, setError] = useState("");
+//     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+//     const handleLogin = async (e) => {
+//         e.preventDefault();
 
-        const response = await fetch("http://localhost:8080/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify({ username, password }),
-        });
+//         try {
+//             const response = await fetch("http://localhost:8080/api/auth/login", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json"},
+//                 body: JSON.stringify({ email, password }),
+//             });
 
-        const data = await response.json();
+//             if(!response.ok) {
+//                 setError("Invalid email or password.");
+//                 return;
+//             }
 
-        if(response.ok) {
-            alert("Login successful.");
-            onLogin(data.id); //pass user ID up to APP
-        } else {
-            alert(data.error || "Login failed.");
-        }
-    };
+//             const user = await response.json();
+//             localStorage.setItem("user", JSON.stringify(user));
+//             setUser(user);
+//             navigate("/account");
+//         } catch (err) {
+//             console.error(err);
+//             setError("Login failed. Try again.")
+//         }
+        
+//     };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <h2>Login</h2>
-            <input
-                type="text"
-                placeholder="Type in email address...."
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <br/>
-            <input
-                type="password"
-                placeholder="Type in password...."
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <br />
-            <button type="submit">Login</button>                            
-        </form>
-    );
-} 
+//     return (
+//         <div className="login-page">
+//             <h2>Login</h2>
+//             <form onSubmit={handleLogin}>
+//                 <input
+//                     type="email"
+//                     placeholder="Type in email address...."
+//                     value={email}
+//                     onChange={(e) => setEmail(e.target.value)}
+//                     required
+//                 />
+//                 <input
+//                     type="password"
+//                     placeholder="Type in password...."
+//                     value={password}
+//                     onChange={(e) => setPassword(e.target.value)}
+//                     required
+//                 />
+//                 <button type="submit">Login</button>
+//             </form>
+//             {error && <p style={{color: "red" }}>{error}</p>}
+//             <p>
+//                 Don't have an account? <Link to="/register">Register here</Link>
+//             </p>
+//         </div>
+//     );
+// }  
+
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+
+export default function Login({ setUser }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!res.ok) {
+        setError("Invalid email or password");
+        return;
+      }
+      const user = await res.json();
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
+      navigate("/account");
+    } catch (err) {
+      console.error(err);
+      setError("Login failed. Try again.");
+    }
+  };
+
+  return (
+    <div className="login-page">
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <p>
+        Don’t have an account? <Link to="/register">Register here</Link>
+      </p>
+    </div>
+  );
+}

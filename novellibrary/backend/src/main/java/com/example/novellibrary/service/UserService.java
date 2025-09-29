@@ -12,7 +12,7 @@ public class UserService {
     private final UserRepository repo;
     private final BCryptPasswordEncoder encoder;
 
-    public UserService(UserRepository repo, BCryptPasswordEncoder encoder) {
+    public UserService(UserRepository repo, BCryptPasswordEncoder encoder) { 
         this.repo = repo;
         this.encoder = encoder;
     }
@@ -36,5 +36,10 @@ public class UserService {
             }
         }
         return Optional.empty();
+    }
+
+    //find by email
+    public Optional<User> findByEmail(String email) {
+        return repo.findByEmail(email);
     }
 }
