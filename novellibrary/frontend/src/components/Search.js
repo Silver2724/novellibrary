@@ -126,7 +126,17 @@ export default function Search() {
     const handleSearch = async (query) => {
         //call backend APi here
         try {
-            const res = await fetch(`http://localhost:8080/api/search?q=${encodeURIComponent(query)}`);
+            const res = await fetch(`http://localhost:8080/api/search?q=${encodeURIComponent(query)}`, 
+            {
+                method: "GET",
+                headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`}
+            }       
+            );
+
+            if (!res.ok) {
+                throw new Error(`Search failed: ${res.status}`);
+            }
+            
             const data = await res.json();
             setResults(data);
         } catch (err) {

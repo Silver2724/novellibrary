@@ -22,8 +22,19 @@ public class UserService {
     }
 
     public User register(String name, String email, String password) {
+        //checks if email is already in use
+        Optional<User> existing = repo.findByEmail(email);
+        if (existing.isPresent()) {
+            throw new IllegalArgumentException("Email is already in use.");
+        }
+
         String hashed = encoder.encode(password);
-        User user = new User(name, email, hashed);
+        
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(hashed);
+
         return repo.save(user);
     }
 
@@ -41,5 +52,17 @@ public class UserService {
     //find by email
     public Optional<User> findByEmail(String email) {
         return repo.findByEmail(email);
+    }
+
+    //reset password
+    public boolean resetPassword(String email, String newPassword) {
+        Optional<User> userOpt = repo.findByEmail(email);
+        if(userOpt.isPresent()) {
+            User user = userOpt.get();
+            String hashed = encoder.encode(newPassword);
+            user.setPassword(hashed);
+            return true;
+        }
+        return false;
     }
 }

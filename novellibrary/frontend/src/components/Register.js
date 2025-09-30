@@ -15,7 +15,7 @@ export default function Register() {
         try {
             const response = await fetch("http://localhost:8080/api/auth/register", {
                 method: "POST",
-                headers: { "Content-Type": "application/json"},
+                headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
                 body: JSON.stringify({ name, email, password }),
             });
 

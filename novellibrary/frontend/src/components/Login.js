@@ -115,7 +115,10 @@ export default function Login({ setUser }) {
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <p>
-        Don’t have an account? <Link to="/register">Register here</Link>
+        <Link to="/register">Don’t have an account?</Link>
+      </p>
+      <p>
+        <Link to ="/reset-password">Forgot Password?</Link>
       </p>
     </div>
   );
