@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
+import "./Library.css";
 
 export default function Library() {
     const [library, setLibrary] = useState([]);
     const [error, setError] = useState(null);
 
+    const token = localStorage.getItem("token");
+
     // fetch library on load
     useEffect(() => {
-        fetchLibrary();
-    }, []);
-
-    const fetchLibrary = async () => {
+        const fetchLibrary = async () => {
         try {
-            const res = await fetch("/api/novels");
+            const res = await fetch("http://localhost:8080/api/novels", {
+                headers: {"Authorization": `Bearer ${token}`}
+            });
             if (!res.ok) throw new Error("Failed to load library");
 
             const data = await res.json();
@@ -22,16 +24,21 @@ export default function Library() {
             setError("❌ Could not load library");
         }
     };
+    if(token) fetchLibrary();
+    }, [token]);
+
+    
 
     const handleRemove = async (id) => {
         try {
-            const res = await fetch(`/api/novels/${id}`, {
+            const res = await fetch(`http://localhost:8080/api/novels/${id}`, {
                 method: "DELETE",
+                headers: {"Authorization": `Bearer ${token}`}
             });
             if (!res.ok) throw new Error("Failed to delete novel");
 
             // update local state after successful delete
-            setLibrary(library.filter((n) => n.id !== id));
+            setLibrary(prev => prev.filter(n => n.id !== id));
             setError(null);
         } catch (err) {
             console.error("Delete failed:", err);
@@ -53,7 +60,7 @@ export default function Library() {
                             <div style={{ marginTop: 6 }}>
                                 <small>{book.description}</small>
                                 <p></p>
-                                <small>Link to Book: {book.sourceURL}</small>
+                                <small>Link to Book: <a href={book.sourceURL} target="_blank" rel="noreferrer">{book.title}</a></small>
                             </div>
                             <div style={{ marginTop: 8 }}>
                                 <button onClick={() => handleRemove(book.id)}>

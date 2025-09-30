@@ -22,38 +22,6 @@ export default function App() {
      }, []
     );
 
-    //useEffect(() => { refreshLibrary(); }, []);
-
-    // async function refreshLibrary() {
-    //     const lib = await getLibrary();
-    //     setLibrary(lib); 
-    // }
-    
-    // async function refreshLibrary() {
-    //     const lib = await getLibrary();
-    //     setLibrary(lib);        
-    // }
-
-    // async function handleSearch(q) {
-    //     setQuery(q);
-    //     if(!q) {
-    //         setResults([]);
-    //         return;
-    //     }
-    //     const r = await searchNovels(q);
-    //     setResults(r);
-    // }
-
-    // async function handleSave(id) {
-    //     await saveNovel(id);
-    //     await refreshLibrary();        
-    // }
-
-    // async function handleDelete(id) {
-    //     await deleteNovel(id);
-    //     await refreshLibrary();        
-    // }
-
     return (
         <div>
             <NavBar user={user} setUser={setUser}/>
@@ -61,7 +29,7 @@ export default function App() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/search' element={<Search />}/>
-                    {/* <Route path='/library' element={<Library />} /> */}
+                    <Route path='/library' element={<Library />} />
                     <Route path='/login' element={<Login setUser={setUser} />} />
                     <Route path='/register' element={<Register />}/>
                     <Route path='/account' element={<Account user={user} />} />

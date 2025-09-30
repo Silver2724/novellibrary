@@ -9,9 +9,10 @@ export default function ResetPassword() {
         e.preventDefault();
 
         try {
+            const token = localStorage.getItem("token");
             const res = await fetch("http://localhost:8080/api/auth/reset-password", {
                 method: "POST",
-                headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                headers: { "Authorization": `Bearer ${token}` },
                 body: JSON.stringify({ email, newPassword }),
             });
 

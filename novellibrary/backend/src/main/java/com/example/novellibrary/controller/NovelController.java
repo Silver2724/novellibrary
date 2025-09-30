@@ -9,16 +9,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import com.example.novellibrary.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/novels")
 public class NovelController {
     private final NovelService service;
     private final UserService uService;
     private final RestTemplate rest = new RestTemplate();
+    private final JwtUtil jwtUtil = new JwtUtil();
 
     @Value("${GOOGLE_BOOKS_API_KEY}")
     //API KEY: AIzaSyCPBPvQBNuSa9aLUSpQj4LSvhN_oS2-P4M
@@ -31,23 +34,49 @@ public class NovelController {
     }
 
     //get all the novels in the library
-    @GetMapping("/novels/{userId}") 
-    public List<Novel> getLibrary(@PathVariable Long userId) {
-        User user = uService.findById(userId).orElseThrow();
-        return service.listAll(user);
+    @GetMapping("/library") 
+    public ResponseEntity<?> getLibrary(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        String token = authHeader.substring(7);
+        String email = jwtUtil.extractEmail(token);
+
+        Optional<User> user = uService.findByEmail(email);
+        if(user.isEmpty()) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        List<Novel> novels = service.listAll(user.get());
+        return ResponseEntity.ok(novels);
     }
 
     //save a novel title to a library
-    @PostMapping("/novels/{userId}")
-    public Novel saveNovel(@PathVariable Long userId, @RequestBody NovelDTO dto) {
-        User user = uService.findById(userId).orElseThrow();
-        Novel n = new Novel(dto.getTitle(), dto.getAuthor(), dto.getDescription(), dto.getSourceURL(), user);
-        return service.save(n, user);
+    @PostMapping("/novels")
+    public ResponseEntity<?> saveNovel(@RequestBody NovelDTO dto, HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        String token = authHeader.substring(7);
+        String email = jwtUtil.extractEmail(token);
+
+        Optional<User> user = uService.findByEmail(email);
+        if(user.isEmpty()) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        Novel n = new Novel(dto.getTitle(), dto.getAuthor(), dto.getDescription(), dto.getSourceURL(), user.get());
+        service.save(n, user.get());
+        return ResponseEntity.ok(n);
     }
 
     //delete a novel from your library
     @DeleteMapping("/novels/{id}")
-    public ResponseEntity<?> deleteNovel(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteNovel(@PathVariable Long id) {
         Optional<Novel> maybe = service.findById(id); //find novel by its id
         if(maybe.isEmpty()) return ResponseEntity.notFound().build(); //check whether novel title exists in your library
         service.delete(id); //delete the novel

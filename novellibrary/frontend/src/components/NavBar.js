@@ -10,7 +10,7 @@ export default function NavBar({ user, setUser }) {
         <nav className="navbar"> 
             <div className="nav-links">
                 <Link to="/">Home</Link>
-                {/* <Link to="/library">Library</Link> */}
+                <Link to="/library">Library</Link>
                 <Link to="/search">Search Novels</Link>
                 {user ? (
                     <>

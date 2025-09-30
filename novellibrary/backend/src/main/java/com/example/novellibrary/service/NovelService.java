@@ -4,6 +4,8 @@ import com.example.novellibrary.model.Novel;
 import com.example.novellibrary.model.User;
 import com.example.novellibrary.repository.NovelRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 import java.util.Optional;
 
