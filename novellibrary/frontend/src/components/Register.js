@@ -13,17 +13,20 @@ export default function Register() {
         e.preventDefault();
 
         try {
-            const token = localStorage.getItem("token");
             const response = await fetch("http://localhost:8080/api/auth/register", {
                 method: "POST",
-                headers: { "Authorization": `Bearer ${token}` },
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ name, email, password }),
             });
 
             if(!response.ok) {
-                setError("Registration error.");
+                const errText = await response.text();
+                setError(`Registration failed: ${errText}`);
                 return;
             }
+
+            alert("Registration successful! You can now log in!");
+            navigate("/login");
 
         } catch (err) {
             console.error(err);

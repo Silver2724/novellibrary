@@ -4,12 +4,12 @@ export default function ResetPassword() {
     const [email, setEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [message, setMessage] = useState("");
+    const token = localStorage.getItem("token");
 
     const handleReset = async () => {
         e.preventDefault();
 
         try {
-            const token = localStorage.getItem("token");
             const res = await fetch("http://localhost:8080/api/auth/reset-password", {
                 method: "POST",
                 headers: { "Authorization": `Bearer ${token}` },

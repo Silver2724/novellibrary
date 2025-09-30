@@ -61,36 +61,30 @@ export default function Search() {
 
     const handleSave = async (novel) => {
         try {
-            const res = await fetch(`http://localhost:8080/api/novels`, {
+            if (!token) throw new Error("No token found, please login");
+
+            const res = await fetch("http://localhost:8080/api/novels", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`},
+                    "Authorization": `Bearer ${token}`
+                },
                 body: JSON.stringify(novel),
             });
 
-            if(!res.ok) {
-                throw new Error("Failed to save novel.");
-            }
+            if (!res.ok) throw new Error("Failed to save novel.");
 
             const saved = await res.json();
             console.log("Saved to library: ", saved);
 
             alert(`Saved "${saved.title}" to your library!`);
 
-            setLibrary((prev) => {
-                if(prev.find((n) => n.title === novel.title && n.author === novel.author)) {
-                    return prev;
-                }
-                return [...prev, novel];
-            });
         } catch (err) {
             console.error("Save failed: ", err);
-            alert(`Failed to save novel. Please try again.`);
+            alert("Failed to save novel. Please try again.");
         }
-    
-        console.log("Saving novel: ", novel);
     };
+
 
     return (
         <div>

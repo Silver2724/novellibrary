@@ -9,11 +9,15 @@ export default function Library() {
 
     // fetch library on load
     useEffect(() => {
-        const fetchLibrary = async () => {
+    const fetchLibrary = async () => {
         try {
-            const res = await fetch("http://localhost:8080/api/novels", {
-                headers: {"Authorization": `Bearer ${token}`}
+            const token = localStorage.getItem("token");
+            if (!token) return;
+
+            const res = await fetch("http://localhost:8080/api/novels/library", {
+                headers: { "Authorization": `Bearer ${token}` }
             });
+
             if (!res.ok) throw new Error("Failed to load library");
 
             const data = await res.json();
@@ -24,10 +28,9 @@ export default function Library() {
             setError("❌ Could not load library");
         }
     };
-    if(token) fetchLibrary();
-    }, [token]);
 
-    
+    fetchLibrary();
+    }, []);
 
     const handleRemove = async (id) => {
         try {
@@ -74,23 +77,3 @@ export default function Library() {
         </div>
     );
 }
-
-    
-            /* <h2>Your Private Library</h2>
-            <ul style={{listStyle: 'none', padding: 0}}>
-                {novels.map(n => (
-                    <li key={n.id} style={{padding: 8, borderBottom: '1px solid #eee'}}>
-                        <div style={{display:'flex', justifyContent:'space-between',alignItems:'center'}}>
-                            <div>
-                                <strong>{n.title}</strong> - <em>{n.author}</em>
-                                <div><small>{n.description?.slice(0, 200)}</small></div>
-                                {n.sourceUrl ? <div><a href={n.sourceUrl} target="_blank" rel="noreferrer">Source</a></div> : null}
-                                <div><small>Added: {new Date(n.addedAt).toLocaleString()}</small></div>
-                            </div>
-                            <div>
-                                <button onClick={ () => onDelete(n.id)}>Delete</button>
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul> */
