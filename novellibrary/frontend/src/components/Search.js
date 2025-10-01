@@ -14,7 +14,7 @@ export default function Search() {
         const fetchLibrary = async () => {
             try {
                 const res = await fetch("http://localhost:8080/api/library", {
-                    headers: {"Authorization": `Bearer ${token}`}
+                    headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 });
 
                 if(!res.ok) {

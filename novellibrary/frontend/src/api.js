@@ -13,7 +13,7 @@ export async function getLibrary() {
 export async function saveNovel(novel) {
     const res = await fetch(`${API_BASE}/novels`, {
         method: 'POST',
-        headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` },
         body: JSON.stringify(novel)
     });
     return res.json();

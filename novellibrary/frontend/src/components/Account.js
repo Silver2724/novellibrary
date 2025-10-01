@@ -1,8 +1,40 @@
+import { useEffect, useState } from "react";
 
-export default function Account({ user }) {
-    if(!user) {
-        return <p>You are not logged in.</p>
-    }
+export default function Account() {
+    const [user, setUser] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem("token");
+            if(!token)  {
+                setError("Not authenticated");
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:8080/api/auth/me", {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if(!res.ok) throw new Error("Failed to fetch user");
+
+                const data = await res.json();
+                setUser(data);
+            } catch (err) {
+                console.error("Fetch user failed: ", err);
+                setError("Could not load account info");
+            }
+        };
+
+        fetchUser();
+    }, []);
+    
+    if(error) return <p style={{color: "red"}}>{error}</p>;
+    if(!user) return <p>You are not logged in.</p>;
 
     return (
         <div className="account-page">

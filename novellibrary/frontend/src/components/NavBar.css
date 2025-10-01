@@ -23,6 +23,10 @@
     color: #ffdf6c;
 }
 
+.Account {
+    align-items: end;
+}
+
 /* Mobile Responsive */
 @media (max-width: 600px) {
     .navbar {

@@ -11,11 +11,10 @@ export default function Library() {
     useEffect(() => {
     const fetchLibrary = async () => {
         try {
-            const token = localStorage.getItem("token");
             if (!token) return;
 
             const res = await fetch("http://localhost:8080/api/novels/library", {
-                headers: { "Authorization": `Bearer ${token}` }
+                headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
             });
 
             if (!res.ok) throw new Error("Failed to load library");
@@ -30,13 +29,13 @@ export default function Library() {
     };
 
     fetchLibrary();
-    }, []);
+    }, [token]);
 
     const handleRemove = async (id) => {
         try {
             const res = await fetch(`http://localhost:8080/api/novels/${id}`, {
                 method: "DELETE",
-                headers: {"Authorization": `Bearer ${token}`}
+                headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
             });
             if (!res.ok) throw new Error("Failed to delete novel");
 

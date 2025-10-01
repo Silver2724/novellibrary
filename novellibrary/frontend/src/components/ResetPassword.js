@@ -12,14 +12,14 @@ export default function ResetPassword() {
         try {
             const res = await fetch("http://localhost:8080/api/auth/reset-password", {
                 method: "POST",
-                headers: { "Authorization": `Bearer ${token}` },
+                headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                 body: JSON.stringify({ email, newPassword }),
             });
 
             const text = await res.text();
             setMessage(text);
         } catch (err) {
-            setMessage("Error resettin password.");
+            setMessage("Error resetting password.");
         }
     }
 
