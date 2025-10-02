@@ -23,11 +23,11 @@ export default function Account() {
                     }
                 });
 
-                if(res.status === 401 || res.status === 403) {
-                    localStorage.removeItem("token");
-                    //navigate("/login");
-                    return;
-                }
+                // if(res.status === 401 || res.status === 403) {
+                //     localStorage.removeItem("token");
+                //     //navigate("/login");
+                //     return;
+                // }
 
                 if(!res.ok) throw new Error("Failed to fetch user");
 

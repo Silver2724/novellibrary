@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -58,6 +59,7 @@ public class UserController {
             userInfo.put("email", u.getEmail());
 
             response.put("user", userInfo);
+            response.put("token", token);
             return ResponseEntity.ok(response);
         }
 
@@ -84,25 +86,20 @@ public class UserController {
 
     //for authenticated user
     @GetMapping("/me")
-    public ResponseEntity<?> me(@RequestHeader("Authorization") String authHeader) {
-        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+    public ResponseEntity<?> me(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(401).body("Unauthorized");
         }
 
         String token = authHeader.substring(7);
         String email = jwtUtil.extractEmail(token);
 
-        Optional<User> user = service.findByEmail(email);
-        if(user.isEmpty()) {
+        Optional<User> userOpt = service.findByEmail(email);
+        if(userOpt.isPresent()) {
+            return ResponseEntity.ok(userOpt.get());
+        } else {
             return ResponseEntity.status(404).body("User not found");
         }
-
-        User u = user.get();
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("id", u.getId());
-        userInfo.put("name", u.getName());
-        userInfo.put("email", u.getEmail());
-        
-        return ResponseEntity.ok(userInfo);
     }
 }
