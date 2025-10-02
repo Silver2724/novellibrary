@@ -34,7 +34,7 @@ public class NovelController {
     }
 
     //get all the novels in the library
-    @GetMapping("/novels/library") 
+    @GetMapping("/library") 
     public ResponseEntity<?> getLibrary(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -54,7 +54,7 @@ public class NovelController {
     }
 
     //save a novel title to a library
-    @PostMapping("/novels")
+    @PostMapping("")
     public ResponseEntity<?> saveNovel(@RequestBody NovelDTO dto, HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -75,7 +75,7 @@ public class NovelController {
     }
 
     //delete a novel from your library
-    @DeleteMapping("/novels/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNovel(@PathVariable Long id) {
         Optional<Novel> maybe = service.findById(id); //find novel by its id
         if(maybe.isEmpty()) return ResponseEntity.notFound().build(); //check whether novel title exists in your library

@@ -11,7 +11,7 @@ export default function Library() {
     useEffect(() => {
     const fetchLibrary = async () => {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (token) {
             //navigate("/login");
             return;
         }
@@ -23,7 +23,7 @@ export default function Library() {
 
             if(res.status === 401 || res.status === 403) {
                 localStorage.removeItem("token");
-                //navigate("/login");
+                navigate("/login");
                 return;
             }
 

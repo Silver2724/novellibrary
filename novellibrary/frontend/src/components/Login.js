@@ -20,8 +20,8 @@ export default function Login({ setUser }) {
         setError("Invalid email or password");
         return;
       }
-      const data = await res.json;
-      console.log("Login response: ", data);
+      const data = await res.json();
+      console.log("Login response: ", data.token);
 
       localStorage.setItem("token", data.token);
 

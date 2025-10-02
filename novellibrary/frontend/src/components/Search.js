@@ -13,7 +13,7 @@ export default function Search() {
     useEffect(() => {
         const fetchLibrary = async () => {
             try {
-                const res = await fetch("http://localhost:8080/api/library", {
+                const res = await fetch("http://localhost:8080/api/novels/library", {
                     headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
                 });
 
