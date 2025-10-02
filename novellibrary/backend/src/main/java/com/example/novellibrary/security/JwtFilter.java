@@ -48,6 +48,8 @@ public class JwtFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
+            System.out.println("Extracted email from token: " + email);
+
         }
 
         chain.doFilter(request, response);
@@ -57,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
         // skip JWT filter for login and registration
-        return path.startsWith("/api/auth/");
+        return path.equals("/api/auth/login") || path.equals("/api/auth/register") || path.equals("/api/auth/reset-password");
     }
 
 }

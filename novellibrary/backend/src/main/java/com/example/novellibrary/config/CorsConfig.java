@@ -31,7 +31,7 @@ public class CorsConfig implements WebMvcConfigurer {
             .and()
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/register", "/api/auth/login", "/h2-console/**").permitAll()
+                .requestMatchers("/api/auth/register", "/api/auth/login", "/api/novels/library", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
             )
             //.formLogin(login -> login.disable())

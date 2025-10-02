@@ -63,7 +63,7 @@ export default function Search() {
         try {
             if (!token) throw new Error("No token found, please login");
 
-            const res = await fetch("http://localhost:8080/api/novels", {
+            const res = await fetch("http://localhost:8080/api/novels/library", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
