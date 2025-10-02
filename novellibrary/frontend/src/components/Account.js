@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Account() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUser = async () => {
             const token = localStorage.getItem("token");
+
             if(!token)  {
-                setError("Not authenticated");
+                //navigate("/login");
                 return;
             }
 
@@ -19,6 +22,12 @@ export default function Account() {
                         "Authorization": `Bearer ${token}`
                     }
                 });
+
+                if(res.status === 401 || res.status === 403) {
+                    localStorage.removeItem("token");
+                    //navigate("/login");
+                    return;
+                }
 
                 if(!res.ok) throw new Error("Failed to fetch user");
 
@@ -31,7 +40,7 @@ export default function Account() {
         };
 
         fetchUser();
-    }, []);
+    }, [navigate]);
     
     if(error) return <p style={{color: "red"}}>{error}</p>;
     if(!user) return <p>You are not logged in.</p>;

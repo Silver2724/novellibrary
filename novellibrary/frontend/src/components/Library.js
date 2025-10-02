@@ -1,21 +1,31 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Library.css";
 
 export default function Library() {
     const [library, setLibrary] = useState([]);
     const [error, setError] = useState(null);
-
-    const token = localStorage.getItem("token");
+    const navigate = useNavigate();
 
     // fetch library on load
     useEffect(() => {
     const fetchLibrary = async () => {
-        try {
-            if (!token) return;
+        const token = localStorage.getItem("token");
+        if (!token) {
+            //navigate("/login");
+            return;
+        }
 
+        try {
             const res = await fetch("http://localhost:8080/api/novels/library", {
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
             });
+
+            if(res.status === 401 || res.status === 403) {
+                localStorage.removeItem("token");
+                //navigate("/login");
+                return;
+            }
 
             if (!res.ok) throw new Error("Failed to load library");
 
@@ -29,7 +39,7 @@ export default function Library() {
     };
 
     fetchLibrary();
-    }, [token]);
+    }, [navigate]);
 
     const handleRemove = async (id) => {
         try {

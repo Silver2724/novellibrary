@@ -6,25 +6,27 @@ export default function Login({ setUser }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
-        headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`},
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email, password }),
       });
+
       if (!res.ok) {
         setError("Invalid email or password");
         return;
       }
-      const user = await res.json();
-      localStorage.setItem("token", user.token);
+      const data = await res.json;
+      console.log("Login response: ", data);
+
+      localStorage.setItem("token", data.token);
+
+      setUser(data.user);
       
-      setUser(user);
       navigate("/account");
     } catch (err) {
       console.error(err);

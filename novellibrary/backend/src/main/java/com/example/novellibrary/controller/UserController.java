@@ -8,9 +8,7 @@ import com.example.novellibrary.util.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.HashMap;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -29,13 +27,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDTO request) {
         try {
-            User user = service.register(request.getName(), request.getEmail(), request.getPassword());
-
             //check if user already exists
             Optional<User> existing = service.findByEmail(request.getEmail());
             if(existing.isPresent()) {
                 return ResponseEntity.badRequest().body("Email is already in use.");
             }
+            
+            User user = service.register(request.getName(), request.getEmail(), request.getPassword());
 
             return ResponseEntity.ok(user);
         } catch (Exception e) {
@@ -46,21 +44,24 @@ public class UserController {
     //login
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDTO request) {
-        String email = request.getEmail();
-        String password = request.getPassword();
-        Optional<User> user = service.login(email, password);
+        Optional<User> user = service.login(request.getEmail(), request.getPassword());
 
         if(user.isPresent()) {
-            String token = jwtUtil.generateToken(email);
+            String token = jwtUtil.generateToken(request.getEmail());
             Map<String, Object> response = new HashMap<>();
-            
-            response.put("token", token);
-            response.put("user", user.get());
-            
+
+            //send user back (no password)
+            User u = user.get();
+            Map<String, Object> userInfo = new HashMap<>();
+            userInfo.put("id", u.getId());
+            userInfo.put("name", u.getName());
+            userInfo.put("email", u.getEmail());
+
+            response.put("user", userInfo);
             return ResponseEntity.ok(response);
         }
 
-        return ResponseEntity.status(401).body("Invalid credentials.");
+        return ResponseEntity.status(401).body("Invalid credentials");
     }
 
     //reset password
@@ -79,5 +80,29 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating password: " + e.getMessage());
         }
+    }
+
+    //for authenticated user
+    @GetMapping("/me")
+    public ResponseEntity<?> me(@RequestHeader("Authorization") String authHeader) {
+        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        String token = authHeader.substring(7);
+        String email = jwtUtil.extractEmail(token);
+
+        Optional<User> user = service.findByEmail(email);
+        if(user.isEmpty()) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        User u = user.get();
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("id", u.getId());
+        userInfo.put("name", u.getName());
+        userInfo.put("email", u.getEmail());
+        
+        return ResponseEntity.ok(userInfo);
     }
 }
