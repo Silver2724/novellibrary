@@ -6,12 +6,12 @@ export default function Library() {
     const [library, setLibrary] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
 
     // fetch library on load
     useEffect(() => {
     const fetchLibrary = async () => {
-        const token = localStorage.getItem("token");
-        if (token) {
+        if (!token) {
             //navigate("/login");
             return;
         }
@@ -21,11 +21,11 @@ export default function Library() {
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
             });
 
-            if(res.status === 401 || res.status === 403) {
-                localStorage.removeItem("token");
-                navigate("/login");
-                return;
-            }
+            // if(res.status === 401 || res.status === 403) {
+            //     localStorage.removeItem("token");
+            //     navigate("/login");
+            //     return;
+            // }
 
             if (!res.ok) throw new Error("Failed to load library");
 

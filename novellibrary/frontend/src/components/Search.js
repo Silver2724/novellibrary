@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 import "./Search.css";
@@ -6,6 +7,7 @@ import "./Search.css";
 export default function Search() {
     const[results, setResults] = useState([]);
     const[library, setLibrary] = useState([]);
+    const navigate = useNavigate();
 
     const token = localStorage.getItem("token");
 
@@ -32,7 +34,7 @@ export default function Search() {
             }
         };
         if(token) fetchLibrary();
-    }, [token]);
+    }, [token, navigate]);
 
     //search novels
     const handleSearch = async (query) => {

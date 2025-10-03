@@ -50,6 +50,8 @@ public class NovelController {
         }
 
         List<Novel> novels = service.listAll(user.get());
+        System.out.println("Fetching library for user: " + email);
+        System.out.println("Novels found: " + novels.size());
         return ResponseEntity.ok(novels);
     }
 
@@ -76,12 +78,32 @@ public class NovelController {
 
     //delete a novel from your library
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNovel(@PathVariable Long id) {
-        Optional<Novel> maybe = service.findById(id); //find novel by its id
-        if(maybe.isEmpty()) return ResponseEntity.notFound().build(); //check whether novel title exists in your library
-        service.delete(id); //delete the novel
+    public ResponseEntity<?> deleteNovel(@PathVariable Long id, HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        String token = authHeader.substring(7);
+        String email = jwtUtil.extractEmail(token);
+
+        Optional<User> user = uService.findByEmail(email);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        Optional<Novel> maybe = service.findById(id);
+        if (maybe.isEmpty()) return ResponseEntity.notFound().build();
+
+        Novel novel = maybe.get();
+        if (!novel.getUser().equals(user.get())) {
+            return ResponseEntity.status(403).body("Not allowed");
+        }
+
+        service.delete(id);
         return ResponseEntity.ok().build();
     }
+
 
     @GetMapping("/search")
     public List<Map<String, String>> search (@RequestParam("q") String q) {
