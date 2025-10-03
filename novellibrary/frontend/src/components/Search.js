@@ -14,7 +14,11 @@ export default function Search() {
         const fetchLibrary = async () => {
             try {
                 const res = await fetch("http://localhost:8080/api/novels/library", {
-                    headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
+                    method: "GET",
+                    headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
                 });
 
                 if(!res.ok) {

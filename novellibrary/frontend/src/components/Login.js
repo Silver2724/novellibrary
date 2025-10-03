@@ -10,9 +10,12 @@ export default function Login({ setUser }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ email, password }),
       });
 
