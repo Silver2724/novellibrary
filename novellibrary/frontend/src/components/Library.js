@@ -17,7 +17,7 @@ export default function Library() {
         }
 
         try {
-            const res = await fetch("http://localhost:8080/api/novels/library", {
+            const res = await fetch("http://18.118.102.84:8080/api/novels/library", {
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
             });
 
@@ -43,7 +43,7 @@ export default function Library() {
 
     const handleRemove = async (id) => {
         try {
-            const res = await fetch(`http://localhost:8080/api/novels/${id}`, {
+            const res = await fetch(`http://18.118.102.84:8080/api/novels/${id}`, {
                 method: "DELETE",
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
             });

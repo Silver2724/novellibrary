@@ -11,7 +11,7 @@ export default function Login({ setUser }) {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:8080/api/auth/login", {
+      const res = await fetch("http://18.118.102.84:8080/api/auth/login", {
         method: "POST",
         headers: {"Content-Type": "application/json",
           "Authorization": `Bearer ${token}`

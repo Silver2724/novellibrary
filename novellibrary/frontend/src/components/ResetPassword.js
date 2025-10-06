@@ -10,7 +10,7 @@ export default function ResetPassword() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8080/api/auth/reset-password", {
+            const res = await fetch("http://18.118.102.84:8080/api/auth/reset-password", {
                 method: "POST",
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                 body: JSON.stringify({ email, newPassword }),

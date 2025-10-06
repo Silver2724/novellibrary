@@ -16,7 +16,7 @@ export default function Account() {
             }
 
             try {
-                const res = await fetch("http://localhost:8080/api/auth/me", {
+                const res = await fetch("http://18.118.102.84:8080/api/auth/me", {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`

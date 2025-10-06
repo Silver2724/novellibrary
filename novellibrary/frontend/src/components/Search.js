@@ -15,7 +15,7 @@ export default function Search() {
     useEffect(() => {
         const fetchLibrary = async () => {
             try {
-                const res = await fetch("http://localhost:8080/api/novels/library", {
+                const res = await fetch("http://18.118.102.84:8080/api/novels/library", {
                     method: "GET",
                     headers: {
                     "Content-Type": "application/json",
