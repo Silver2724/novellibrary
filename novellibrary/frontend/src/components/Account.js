@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 export default function Account() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
@@ -16,7 +18,7 @@ export default function Account() {
             }
 
             try {
-                const res = await fetch("http://18.118.102.84:8080/api/auth/me", {
+                const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`

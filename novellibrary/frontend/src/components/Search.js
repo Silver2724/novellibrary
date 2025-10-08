@@ -4,6 +4,8 @@ import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 import "./Search.css";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 export default function Search() {
     const[results, setResults] = useState([]);
     const[library, setLibrary] = useState([]);
@@ -15,7 +17,7 @@ export default function Search() {
     useEffect(() => {
         const fetchLibrary = async () => {
             try {
-                const res = await fetch("http://18.118.102.84:8080/api/novels/library", {
+                const res = await fetch(`${API_BASE_URL}/api/novels/library`, {
                     method: "GET",
                     headers: {
                     "Content-Type": "application/json",
@@ -50,7 +52,7 @@ export default function Search() {
             }
             
             const data = await res.json();
-            setResults(data);
+            //setResults(data);
             const books = data.items?.map(item => {
                 const info = item.volumeInfo || {};
                 return {
@@ -70,7 +72,7 @@ export default function Search() {
         try {
             if (!token) throw new Error("No token found, please login");
 
-            const res = await fetch("http://18.118.102.84:8080/api/novels/library", {
+            const res = await fetch(`${API_BASE_URL}/api/novels/library`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 export default function Login({ setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://18.118.102.84:8080/api/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
-        headers: {"Content-Type": "application/json"
-          //"Authorization": `Bearer ${token}`
-        },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email, password }),
       });
 

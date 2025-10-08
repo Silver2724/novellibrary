@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 export default function Register() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -13,10 +15,11 @@ export default function Register() {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://18.118.102.84:8080/api/auth/register", {
+            const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ name, email, password }),
+                credentials: "include", // include cookies
             });
 
             if(!response.ok) {

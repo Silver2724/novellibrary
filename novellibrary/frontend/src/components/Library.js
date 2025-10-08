@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Library.css";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 export default function Library() {
     const [library, setLibrary] = useState([]);
     const [error, setError] = useState(null);
@@ -17,7 +19,7 @@ export default function Library() {
         }
 
         try {
-            const res = await fetch("http://18.118.102.84:8080/api/novels/library", {
+            const res = await fetch(`${API_BASE_URL}/api/novels/library`, {
                 method: "GET",
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
             });
@@ -42,7 +44,7 @@ export default function Library() {
 
     const handleRemove = async (id) => {
         try {
-            const res = await fetch(`http://18.118.102.84:8080/api/novels/${id}`, {
+            const res = await fetch(`${API_BASE_URL}/api/novels/${id}`, {
                 method: "DELETE",
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
             });
