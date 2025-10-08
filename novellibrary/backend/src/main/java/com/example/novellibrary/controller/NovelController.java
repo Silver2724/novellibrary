@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.*;
 
+@CrossOrigin("http://novellibrarybucket.s3-website.us-east-2.amazonaws.com")
 @RestController
 @RequestMapping("/api/novels")
 public class NovelController {

@@ -3,6 +3,8 @@ package com.example.novellibrary.config;
 import com.example.novellibrary.security.JwtFilter;
 import com.example.novellibrary.security.CustomUserDetailsService;
 
+import org.springframework.http.HttpMethod;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,6 +43,7 @@ public class SecurityConfig implements WebMvcConfigurer{
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
