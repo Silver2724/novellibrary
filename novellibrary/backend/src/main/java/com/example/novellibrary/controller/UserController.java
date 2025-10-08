@@ -35,8 +35,17 @@ public class UserController {
             }
             
             User user = service.register(request.getName(), request.getEmail(), request.getPassword());
+            String token = jwtUtil.generateToken(user.getEmail());
 
-            return ResponseEntity.ok(user);
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", Map.of(
+                "id", user.getId(),
+                "name", user.getName(),
+                "email", user.getEmail()
+            ));
+            response.put("token", token);
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

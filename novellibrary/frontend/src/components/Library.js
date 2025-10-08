@@ -12,7 +12,7 @@ export default function Library() {
     useEffect(() => {
     const fetchLibrary = async () => {
         if (!token) {
-            //navigate("/login");
+            navigate("/login");
             return;
         }
 
