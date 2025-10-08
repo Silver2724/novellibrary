@@ -58,8 +58,12 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        // skip JWT filter for login and registration
-        return path.equals("/api/auth/login") || path.equals("/api/auth/register") || path.equals("/api/auth/reset-password");
+    
+        // skip JWT filter for login, registration, password reset, and preflight OPTIONS
+        return path.equals("/api/auth/login") 
+            || path.equals("/api/auth/register") 
+            || path.equals("/api/auth/reset-password")
+            || "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 
 }

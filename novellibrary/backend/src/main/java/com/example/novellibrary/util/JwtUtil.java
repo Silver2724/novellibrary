@@ -1,21 +1,26 @@
 package com.example.novellibrary.util;
 
-import java.util.Date;
-import java.util.function.Function;
-
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.security.Key;
+import java.util.function.Function;
+
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Component
 public class JwtUtil {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
-    private final Key key;
+    private Key key;
     private final long EXPIRATION = 24 * 60 * 60 * 1000; //1 day
 
     @PostConstruct
