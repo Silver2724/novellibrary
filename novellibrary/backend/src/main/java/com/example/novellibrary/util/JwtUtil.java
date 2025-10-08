@@ -13,8 +13,15 @@ import java.security.Key;
 
 @Component
 public class JwtUtil {
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
+    private final Key key;
     private final long EXPIRATION = 24 * 60 * 60 * 1000; //1 day
+
+    @PostConstruct
+    public void init() {
+        this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    }
 
     // generate token
     public String generateToken(String email) {

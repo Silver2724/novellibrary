@@ -35,7 +35,9 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost:3000") // explicitly allow React frontend
+            .allowedOrigins("http://localhost:3000",
+            "http://novellibrarybucket.s3-website-us-west-2.amazonaws.com",
+            "https://novellibrarybucket.s3-website-us-west-2.amazonaws.com") // explicitly allow React frontend
             //.allowedOrigins("http://novel-library-frontend.s3-website-us-west-2.amazonaws.com")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
