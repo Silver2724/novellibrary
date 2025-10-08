@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.*;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/novels")
 public class NovelController {
