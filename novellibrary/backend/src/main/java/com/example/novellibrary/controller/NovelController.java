@@ -20,16 +20,17 @@ public class NovelController {
     private final NovelService service;
     private final UserService uService;
     private final RestTemplate rest = new RestTemplate();
-    private final JwtUtil jwtUtil = new JwtUtil();
+    private final JwtUtil jwtUtil;
 
     @Value("${GOOGLE_BOOKS_API_KEY}")
     //API KEY: AIzaSyCPBPvQBNuSa9aLUSpQj4LSvhN_oS2-P4M
     private String googleAPIKey;
 
     //initialze service
-    public NovelController(NovelService service, UserService uService) {
+    public NovelController(NovelService service, UserService uService, JwtUtil jwtUtil) {
         this.service = service;
         this.uService = uService;
+        this.jwtUtil = jwtUtil;
     }
 
     //get all the novels in the library
