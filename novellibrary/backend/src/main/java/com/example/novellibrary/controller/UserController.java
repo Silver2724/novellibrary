@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import jakarta.servlet.http.HttpServletRequest;
 
-@CrossOrigin("http://novellibrarybucket.s3-website.us-east-2.amazonaws.com")
 @RestController
 @RequestMapping("/api/auth")
 public class UserController {

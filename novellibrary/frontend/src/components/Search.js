@@ -34,6 +34,7 @@ export default function Search() {
             }
         };
         if(token) fetchLibrary();
+        else console.warn("No token found — cannot fetch user library");
     }, [token, navigate]);
 
     //search novels

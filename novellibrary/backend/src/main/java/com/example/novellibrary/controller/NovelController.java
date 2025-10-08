@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.*;
 
-@CrossOrigin("http://novellibrarybucket.s3-website.us-east-2.amazonaws.com")
 @RestController
 @RequestMapping("/api/novels")
 public class NovelController {
@@ -37,15 +36,20 @@ public class NovelController {
     @GetMapping("/library") 
     public ResponseEntity<?> getLibrary(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
+        System.out.println("Authorization header: " + authHeader);
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("No Bearer token found");
             return ResponseEntity.status(401).body("Unauthorized");
         }
 
         String token = authHeader.substring(7);
+        System.out.println("JWT token: " + token);
         String email = jwtUtil.extractEmail(token);
+        System.out.println("Extracted email from token: " + email);
 
         Optional<User> user = uService.findByEmail(email);
         if(user.isEmpty()) {
+            System.out.println("User not found for email: " + email);
             return ResponseEntity.status(404).body("User not found");
         }
 
@@ -56,7 +60,7 @@ public class NovelController {
     }
 
     //save a novel title to a library
-    @PostMapping("")
+    @PostMapping("/library")
     public ResponseEntity<?> saveNovel(@RequestBody NovelDTO dto, HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {

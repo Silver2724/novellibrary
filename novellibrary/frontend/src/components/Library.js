@@ -18,6 +18,7 @@ export default function Library() {
 
         try {
             const res = await fetch("http://18.118.102.84:8080/api/novels/library", {
+                method: "GET",
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`}
             });
 
@@ -31,15 +32,13 @@ export default function Library() {
 
             const data = await res.json();
             setLibrary(data);
-            setError(null);
         } catch (err) {
             console.error("Fetch library failed:", err);
-            setError("❌ Could not load library");
         }
     };
 
-    fetchLibrary();
-    }, [navigate]);
+    if(token) fetchLibrary();
+    }, [token]);
 
     const handleRemove = async (id) => {
         try {
