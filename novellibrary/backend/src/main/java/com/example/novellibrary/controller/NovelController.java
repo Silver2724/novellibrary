@@ -36,6 +36,10 @@ public class NovelController {
     //get all the novels in the library
     @GetMapping("/library") 
     public ResponseEntity<?> getLibrary(HttpServletRequest request) {
+        if("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return ResponseEntity.ok().build();
+        }
+
         String authHeader = request.getHeader("Authorization");
         System.out.println("Authorization header: " + authHeader);
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
