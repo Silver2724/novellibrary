@@ -11,6 +11,8 @@ export default function Register() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    console.log("API_BASE_URL:", process.env.REACT_APP_API_URL);
+
     const handleRegister = async (e) => {
         e.preventDefault();
 
@@ -19,7 +21,6 @@ export default function Register() {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ name, email, password }),
-                credentials: "include", // include cookies
             });
 
             if(!response.ok) {

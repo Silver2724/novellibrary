@@ -1,17 +1,17 @@
-const API_BASE = process.env.REACT_APP_API_BASE || '/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 export async function searchNovels(query) {
-    const res = await fetch(`${API_BASE}/search?=q=${encodeURIComponent(query)}`);
+    const res = await fetch(`${API_BASE_URL}/search?=q=${encodeURIComponent(query)}`);
     return res.json();
 }
 
 export async function getLibrary() {
-    const res = await fetch(`${API_BASE}/novels`);
+    const res = await fetch(`${API_BASE_URL}/novels`);
     return res.json();
 }
 
 export async function saveNovel(novel) {
-    const res = await fetch(`${API_BASE}/novels`, {
+    const res = await fetch(`${API_BASE_URL}/novels`, {
         method: 'POST',
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("token")}` },
         body: JSON.stringify(novel)
@@ -20,6 +20,6 @@ export async function saveNovel(novel) {
 }
 
 export async function deleteNovel(id) {
-    const res = await fetch(`${API_BASE}/novels/${id}`, {method: 'DELETE'});
+    const res = await fetch(`${API_BASE_URL}/novels/${id}`, {method: 'DELETE'});
     return res.json();
 }

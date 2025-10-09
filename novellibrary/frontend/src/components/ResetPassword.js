@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 export default function ResetPassword() {
     const [email, setEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -10,7 +12,7 @@ export default function ResetPassword() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://18.118.102.84:8080/api/auth/reset-password", {
+            const res = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                 body: JSON.stringify({ email, newPassword }),
