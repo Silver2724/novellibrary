@@ -43,7 +43,7 @@ public class SecurityConfig implements WebMvcConfigurer{
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow preflight requests
-                .requestMatchers("/api/auth/**", "/h2-console/**", "/api/novels/**").permitAll()
+                .requestMatchers("/api/auth/**", "/h2-console/**", "/api/novels/library").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
@@ -54,9 +54,12 @@ public class SecurityConfig implements WebMvcConfigurer{
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
+        configuration.setAllowedOriginPatterns(List.of(
             "http://localhost:3000",
-            "http://novellibrarybucket.s3-website.us-east-2.amazonaws.com"
+            "http://novellibrarybucket.s3-website.us-east-2.amazonaws.com",
+            "https://novellibrarybucket.s3-website.us-east-2.amazonaws.com",
+            "https://*.s3-website.amazonaws.com",
+            "http://*.s3-website.*.amazonaws.com"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
